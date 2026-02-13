@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Favour ❤️</title>
+
+<style>
+:root{
+  --red:#ff2d55;
+  --hot:#ff4d8d;
+  --pink:#ff7aa2;
+  --soft:#fff0f6;
+  --text:#4a0b1f;
+  --shadow: 0 22px 70px rgba(255,45,85,.22);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color:var(--text);
+  overflow:hidden;
+  background:
+    radial-gradient(1100px 700px at 20% 20%, #ffe3ec, transparent 60%),
+    radial-gradient(1000px 650px at 80% 70%, #ffd1e1, transparent 55%),
+    linear-gradient(180deg, var(--soft), #ffffff);
+}
+
+/* floating background hearts */
+.bg-heart{
+  position:absolute;
+  font-size:18px;
+  opacity:.18;
+  animation: floatUp linear infinite;
+  user-select:none;
+  pointer-events:none;
+  filter: blur(.2px);
+}
+@keyframes floatUp{
+  from{ transform: translateY(45vh) translateX(0) rotate(0deg); opacity:0; }
+  10%{ opacity:.22; }
+  to{ transform: translateY(-120vh) translateX(40px) rotate(28deg); opacity:0; }
+}
+
+.wrap{
+  height:100%;
+  display:grid;
+  place-items:center;
+  padding:22px;
+}
+
+.card{
+  width:min(660px, 94vw);
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(10px);
+  border:1px solid rgba(255,45,85,.18);
+  border-radius: 30px;
+  padding: 26px 22px 20px;
+  box-shadow: var(--shadow);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  animation: cardFloat 3.2s ease-in-out infinite;
+}
+@keyframes cardFloat{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-6px); }
+}
+
+.ribbon{
+  position:absolute;
+  inset:-90px -120px auto auto;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle at 30% 30%, #fff, #ffd1e1 55%, #ff9cbc 80%, #ff6f9b 100%);
+  opacity:.55;
+  border-radius:999px;
+  transform: rotate(18deg);
+}
+
+.bigHeart{
+  font-size:58px;
+  margin: 4px 0 12px;
+  filter: drop-shadow(0 10px 20px rgba(255,45,85,.18));
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.07); }
+}
+
+h1{
+  margin:0 0 8px;
+  font-size: clamp(28px, 4.5vw, 42px);
+}
+p{
+  margin: 0 0 10px;
+  font-size: clamp(14px, 2.2vw, 18px);
+  opacity:.92;
+}
+
+.stage{
+  position:relative;
+  height:220px;
+  margin-top: 12px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,122,162,.12), rgba(255,45,85,.06));
+  border: 1px dashed rgba(255,45,85,.25);
+  overflow:hidden;
+}
+
+button{
+  border:0;
+  border-radius:999px;
+  font-weight:900;
+  letter-spacing:.2px;
+  cursor:pointer;
+  transition: transform .16s ease, width .18s ease, height .18s ease, box-shadow .18s ease;
+  touch-action: manipulation;
+}
+
+#yesBtn{
+  position:absolute;
+  left: 22%;
+  top: 56%;
+  width: 185px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--red), var(--hot));
+  color:white;
+  font-size:16px;
+  box-shadow: 0 20px 55px rgba(255,45,85,.22);
+}
+#yesBtn:hover{ transform: translateY(-2px) scale(1.02); }
+#yesBtn:active{ transform: translateY(0) scale(.99); }
+
+#noBtn{
+  position:absolute;
+  left: 58%;
+  top: 56%;
+  width: 120px;
+  height: 52px;
+  background: rgba(255,255,255,.92);
+  color: var(--red);
+  border: 2px solid rgba(255,45,85,.35);
+  box-shadow: 0 12px 26px rgba(255,45,85,.12);
+}
+
+.hint{
+  position:absolute;
+  left:50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  font-size: 13px;
+  opacity:.78;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.dot{
+  width:8px;height:8px;border-radius:999px;background:var(--red);
+  box-shadow: 0 0 0 6px rgba(255,45,85,.12);
+}
+
+/* overlay + modal */
+.overlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,45,85,.12);
+  backdrop-filter: blur(7px);
+  z-index:50;
+}
+.overlay.show{ display:flex; }
+
+.modal{
+  width:min(560px,92vw);
+  background: rgba(255,255,255,.88);
+  border-radius: 30px;
+  border:1px solid rgba(255,45,85,.18);
+  box-shadow: 0 26px 90px rgba(255,45,85,.25);
+  padding: 22px 20px 18px;
+  text-align:center;
+  transform: translateY(8px) scale(.98);
+  opacity:0;
+  animation: popIn .55s cubic-bezier(.2,.9,.2,1) forwards;
+  position:relative;
+  overflow:hidden;
+}
+@keyframes popIn{
+  to { transform: translateY(0) scale(1); opacity:1; }
+}
+
+.modal h2{
+  margin: 6px 0 8px;
+  font-size: clamp(24px, 4vw, 36px);
+}
+.modal p{ margin: 0 0 10px; }
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 10px 14px;
+  border-radius:999px;
+  background: linear-gradient(135deg, rgba(255,45,85,.12), rgba(255,122,162,.12));
+  border:1px solid rgba(255,45,85,.18);
+  font-weight:900;
+}
+
+.close{
+  margin-top: 12px;
+  width: 190px;
+  height: 54px;
+  background: linear-gradient(135deg, var(--pink), var(--red));
+  color:white;
+  box-shadow: 0 18px 55px rgba(255,45,85,.22);
+}
+.close:hover{ transform: translateY(-2px) scale(1.01); }
+
+/* confetti canvas */
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:60;
+  display:none;
+}
+#confetti.show{ display:block; }
+
+/* YES button wiggle when she tries to click No */
+.wiggle{ animation: wiggle .38s ease-in-out; }
+@keyframes wiggle{
+  0%{transform: translateY(-1px) rotate(0deg) scale(1.02);}
+  25%{transform: translateY(-1px) rotate(-2deg) scale(1.03);}
+  50%{transform: translateY(-1px) rotate(2deg) scale(1.03);}
+  75%{transform: translateY(-1px) rotate(-1deg) scale(1.03);}
+  100%{transform: translateY(-1px) rotate(0deg) scale(1.02);}
+}
+</style>
+</head>
+
+<body>
+<div id="bg"></div>
+<canvas id="confetti"></canvas>
+
+<!-- Hidden form data (used to build FormData) -->
+<form id="yesForm" style="display:none;">
+  <input type="hidden" name="answer" value="YES" />
+  <input type="hidden" name="who" value="Favour" />
+  <input type="hidden" name="from" value="Wesley" />
+  <input type="hidden" name="_subject" value="Favour said YES 💖" />
+</form>
+
+<div class="wrap">
+  <div class="card">
+    <div class="ribbon" aria-hidden="true"></div>
+    <div class="bigHeart" aria-hidden="true">💘</div>
+
+    <h1>Favour </h1>
+    <p>Out of everyone in this world… I choose you.</p>
+    <p><b>Will you be my Valentine?</b></p>
+    <p><b>(PS: The girls can have you all day, as long as you're mine from 7pm❤️ ) </b></p>
+
+
+    <div class="stage" id="stage">
+      <button id="yesBtn" type="button">Yes Wesley 🥰</button>
+      <button id="noBtn" type="button" aria-label="No">No</button>
+
+      <div class="hint">
+        <span class="dot"></span>
+        <span>Tap “No” and see what's gonna happen😉</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="yayTitle">
+  <div class="modal">
+    <div class="bigHeart" aria-hidden="true" style="font-size:46px;margin:6px 0 10px;">🎉💗</div>
+    <h2 id="yayTitle">YES!!!!!! Vamoosssss 💞</h2>
+    <p><b>Wesley</b> is officially the happiest man alive 😭❤️</p>
+    <div class="badge">Favour + Wesley = Valentine secured ✨</div>
+    <br/>
+    <button class="close" id="closeBtn" type="button">Awww okay 💕</button>
+  </div>
+</div>
+
+<script>
+/* -------------------- BACKGROUND HEARTS -------------------- */
+const bg = document.getElementById('bg');
+const hearts = ["❤","💗","💖","💘","💕"];
+for (let i = 0; i < 22; i++){
+  const s = document.createElement('div');
+  s.className = 'bg-heart';
+  s.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+  s.style.left = Math.random()*100 + 'vw';
+  s.style.top = (50 + Math.random()*60) + 'vh';
+  s.style.fontSize = (12 + Math.random()*26) + 'px';
+  s.style.animationDuration = (6 + Math.random()*10) + 's';
+  s.style.animationDelay = (-Math.random()*12) + 's';
+  bg.appendChild(s);
+}
+
+/* -------------------- FORMSpree AJAX (NO REDIRECT) -------------------- */
+/* Replace this with your endpoint:
+   e.g. https://formspree.io/f/abcdwxyz
+*/
+const FORMSPREE_URL = "https://formspree.io/f/YOUR_ENDPOINT_HERE";
+
+async function sendYesNotification() {
+  const form = document.getElementById("yesForm");
+  const data = new FormData(form);
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: "POST",
+      body: data,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (!res.ok) {
+      console.warn("Formspree error:", res.status, await res.text());
+    }
+  } catch (err) {
+    console.warn("Network error sending YES:", err);
+  }
+}
+
+/* -------------------- BUTTON LOGIC -------------------- */
+const stage = document.getElementById("stage");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const overlay = document.getElementById("overlay");
+const closeBtn = document.getElementById("closeBtn");
+
+let count = 0;
+
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+function moveNo(){
+  const maxX = stage.clientWidth - noBtn.offsetWidth;
+  const maxY = stage.clientHeight - noBtn.offsetHeight;
+  const pad = 10;
+
+  const x = clamp(Math.random()*maxX, pad, maxX - pad);
+  const y = clamp(Math.random()*maxY, pad, maxY - pad);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
+
+  count++;
+
+  // grow YES button each dodge (viral behavior)
+  const w = clamp(185 + count*18, 185, 340);
+  const h = clamp(60 + count*4, 60, 76);
+  yesBtn.style.width = w + "px";
+  yesBtn.style.height = h + "px";
+
+  // wiggle to make it feel alive
+  yesBtn.classList.remove("wiggle");
+  void yesBtn.offsetWidth;
+  yesBtn.classList.add("wiggle");
+
+  // playful label changes
+  const labels = ["No","nope","hmm…","u sure?","pls 😳","stop it","okay fine"];
+  noBtn.textContent = labels[Math.min(count, labels.length-1)];
+}
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNo(); });
+noBtn.addEventListener("touchstart", (e)=>{
+  e.preventDefault();
+  moveNo();
+},{passive:false});
+
+// initial nudge so it feels “alive” immediately
+requestAnimationFrame(moveNo);
+
+// YES: send notification + celebration
+yesBtn.addEventListener("click", ()=>{
+  // fire-and-forget so the celebration is instant
+  sendYesNotification();
+
+  overlay.classList.add("show");
+  startConfettiBurst();
+  startConfettiRain(1600);
+});
+
+closeBtn.addEventListener("click", ()=>{
+  overlay.classList.remove("show");
+  stopConfetti();
+});
+
+/* -------------------- HEART CONFETTI (CANVAS) -------------------- */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+let pieces = [];
+let rafId = null;
+let rainUntil = 0;
+
+function resize(){
+  canvas.width = window.innerWidth * devicePixelRatio;
+  canvas.height = window.innerHeight * devicePixelRatio;
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+window.addEventListener("resize", resize);
+resize();
+
+function rand(a,b){ return a + Math.random()*(b-a); }
+
+function makePiece(burst=false){
+  const isHeart = Math.random() < 0.55;
+  const centerX = window.innerWidth * 0.5;
+  const centerY = window.innerHeight * 0.35;
+
+  const x = burst ? centerX + rand(-70,70) : rand(0, window.innerWidth);
+  const y = burst ? centerY + rand(-45,45) : -20;
+
+  const vx = burst ? rand(-5.0,5.0) : rand(-1.3,1.3);
+  const vy = burst ? rand(-7.0, -2.0) : rand(2.2, 5.2);
+
+  return {
+    x, y, vx, vy,
+    g: burst ? 0.18 : 0.12,
+    rot: rand(0, Math.PI),
+    vr: rand(-0.12, 0.12),
+    size: rand(9, 19),
+    kind: isHeart ? "heart" : "dot",
+    alpha: rand(0.78, 1),
+    color: ["#ff2d55","#ff4d8d","#ff7aa2","#ffffff"][Math.floor(Math.random()*4)]
+  };
+}
+
+function drawHeart(x,y,s,rot,alpha,color){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(rot);
+  ctx.globalAlpha = alpha;
+
+  ctx.beginPath();
+  ctx.moveTo(0, -s/4);
+  ctx.bezierCurveTo(s/2, -s/2, s, -s/10, 0, s);
+  ctx.bezierCurveTo(-s, -s/10, -s/2, -s/2, 0, -s/4);
+  ctx.closePath();
+
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.restore();
+}
+
+function tick(){
+  ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+  const now = performance.now();
+  if (now < rainUntil && pieces.length < 320){
+    for (let i=0;i<7;i++) pieces.push(makePiece(false));
+  }
+
+  for (const p of pieces){
+    p.vy += p.g;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rot += p.vr;
+    p.vx *= 0.995;
+
+    if (p.kind === "heart"){
+      drawHeart(p.x, p.y, p.size, p.rot, p.alpha, p.color);
+    } else {
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size/3, 0, Math.PI*2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  pieces = pieces.filter(p => p.y < window.innerHeight + 70);
+
+  rafId = requestAnimationFrame(tick);
+}
+
+function startConfettiBurst(){
+  canvas.classList.add("show");
+  for (let i=0;i<170;i++) pieces.push(makePiece(true));
+  if (!rafId) tick();
+}
+
+function startConfettiRain(ms){
+  canvas.classList.add("show");
+  rainUntil = performance.now() + ms;
+  if (!rafId) tick();
+}
+
+function stopConfetti(){
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = null;
+  pieces = [];
+  rainUntil = 0;
+  ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+  canvas.classList.remove("show");
+}
+</script>
+
+</body>
+</html>
