@@ -155,15 +155,18 @@ button{
 
 .hint{
   position:absolute;
+  top:12px;          
   left:50%;
-  bottom: 14px;
   transform: translateX(-50%);
-  font-size: 13px;
-  opacity:.78;
+  font-size: 14px;
+  opacity:.85;
   display:flex;
   gap:8px;
   align-items:center;
+  z-index: 20;       
+  pointer-events:none; 
 }
+
 .dot{
   width:8px;height:8px;border-radius:999px;background:var(--red);
   box-shadow: 0 0 0 6px rgba(255,45,85,.12);
@@ -272,15 +275,18 @@ button{
     <p><b>(PS: The girls can have you all day, as long as you're mine from 7pm❤️ ) </b></p>
 
 
-    <div class="stage" id="stage">
-      <button id="yesBtn" type="button">Yes Wesley 🥰</button>
-      <button id="noBtn" type="button" aria-label="No">No</button>
+   <div class="stage" id="stage">
 
-      <div class="hint">
-        <span class="dot"></span>
-        <span>Tap “No” and see what's gonna happen😉</span>
-      </div>
-    </div>
+  <div class="hint">
+    <span class="dot"></span>
+    <span>Tap “No” and see what’s gonna happen 😉</span>
+  </div>
+
+  <button id="yesBtn">Yes Wesley 🥰</button>
+  <button id="noBtn">No</button>
+
+</div>
+
   </div>
 </div>
 
